@@ -1,3 +1,1 @@
-# Python_Asimov
-# ASIMOVI
-# ASIMOV
+# Projetos em Python da ASIMOV
