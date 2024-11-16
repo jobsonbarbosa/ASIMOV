@@ -37,9 +37,10 @@
 # - Dado uma lista de palavras, printe todas as palavras
 # com pelo menos 5 caracteres.
 
-palavras = ('Telefone', 'Microfone', 'Cadeira', 'Arvore')
+palavras = ['Telefone', 'Microfone', 'Cadeira', 'Arvore', 'Oi', 'Sala']
 
 print(palavras)
 
-for _ in palavras:
-    ...
+for palavra in palavras:
+    if len(palavra) >= 5:
+        print(f'Encontrada palavra com 5 ou mais caracteres: {palavra}')
