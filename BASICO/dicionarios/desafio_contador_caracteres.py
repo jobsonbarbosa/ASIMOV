@@ -29,5 +29,7 @@ vogais = {
 for c in texto:
     if c.upper() == 'A':
         vogais['A'] += 1
+    
 
+#print(f'"{v}" --> esta no texto {contador}x')
             
