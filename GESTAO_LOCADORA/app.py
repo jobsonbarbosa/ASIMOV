@@ -32,11 +32,37 @@ while True:
     print('0 - Mostrar portifólio | 1 - Alugar um carro | 2 - Devolver um carro')
     op = int(input())
     if op == 0:
-        pass
+        mostrar_lista_de_carros(carros)
     elif op == 1:
-        pass
+        mostrar_lista_de_carros(carros)
+        print("====================")
+        print('Escolha o código do carro: ')
+        cod_carro = int(input())
+        print('Por quantos dias você deseja alugar esse carro?')
+        dias = int(input())
+        os.system('cls')
+        
+        print(f'Você escolheu {carros[cod_carro][0]} por {dias} dias')
+        print(f'O aluguel totalizaria R$ {dias * carros[cod_carro][1]}. Deseja alugar?')
+        
+        print('0 - SIM | 1 - NÃO')
+        conf = int(input())
+        if conf == 0:
+            print(f'Parabéns você alugou o {carros[cod_carro][0]} por {dias} dias. ')
+            alugados.append(carros.pop(cod_carro))
+            
     elif op == 2:
-        pass
+        if len(alugados) == 0:
+            print('Não há carros para devolver.')
+        else:
+            print('Segue a lista de carros alugados. Qual você deseja devovler?')
+            mostrar_lista_de_carros(alugados)
+            print("")
+            print('Escolha o código do carro que deseja devolver: ')
+            cod = int(input())
+            if conf == 0:
+                print(f'Obrigado por devolver o carro {alugados[cod][0]}')
+                carros.append(alugados.pop(cod))
     
     print('')
     print("====================")
