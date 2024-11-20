@@ -1,0 +1,2 @@
+para instalar o compatibilizador (windows-curses)
+foi necessário alterar a versão do Python para a versão 3.11.0
