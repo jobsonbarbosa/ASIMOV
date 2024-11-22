@@ -19,6 +19,7 @@ def game_loop(window, game_speed):
     score = 0
      
     while True:
+        
         draw_screen(window=window)
         draw_snake(snake=snake, window=window)
         draw_actor(actor=fruit, window=window, char=curses.ACS_DIAMOND)
@@ -100,7 +101,7 @@ def draw_actor(actor, window, char):
     window.addch(actor[0], actor[1], char)
 
 def get_new_direction(window, timeout):    
-        window.timeout(1000)
+        window.timeout(timeout)
         direction = window.getch()
         if direction in [curses.KEY_UP, curses.KEY_LEFT, curses.KEY_DOWN, curses.KEY_RIGHT]:
             return direction
