@@ -17,7 +17,7 @@ if "data" not in st.session_state:
     
     
 
-st.markdown("# Brasquimica OFFICIAL DATASET!")
+st.markdown("# Jobs Solutions - FIFA OFFICIAL DATASET!")
 st.sidebar.markdown("Desenvolvido por Jobs Solutions IT")
 
 btn = st.button("Acesse os dados no Kaggle")
