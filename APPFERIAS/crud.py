@@ -128,6 +128,13 @@ if __name__ == '__main__':
 #         email='joelmapalmito@gmail.com',
 #         acesso_gestor=False,
 # )
+    cria_usuario(
+        'Cleiton Carvalho',
+        senha='123456',
+        inicio_na_empresa = '2024-11-15',
+        email='cleitinhodabahia@gmail.com',
+        acesso_gestor=True,
+)
 
     
     # ===== verifica senha ====
