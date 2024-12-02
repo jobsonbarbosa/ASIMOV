@@ -9,6 +9,11 @@ with open('calendar_options.json') as f:
 
 if not 'ultimo_clique' in st.session_state:
     st.session_state['ultimo_clique'] = ''
+
+def limpar_datas():
+    del st.session_state['data_inicio']
+    del st.session_state['data_final']
+
 calendar_events = [
     {
         "title": "Férias do Jobs",
@@ -53,10 +58,8 @@ if ('callback' in calendar_widget
                 st.warning(f'Data de inicio de férias selecionada {date_inicio}')
             # LIMPAR
             with cols[1]:
-                if st.button('Limpar', use_container_width=True):
-                    del st.session_state['data_inicio']
-                    del st.session_state['data_final']
-                    st.rerun()
+                st.button('Limpar', use_container_width=True, on_click=limpar_datas)
+                    
             cols = st.columns([0.7, 0.3])
             with cols[0]:
                 st.warning(f'Data final de férias selecionada {date}')
