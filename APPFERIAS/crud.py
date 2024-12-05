@@ -4,6 +4,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from sqlalchemy import create_engine, String, Boolean, Integer, select, ForeignKey
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, Session, relationship
 
+from datetime import datetime
+
 pasta_atual = Path(__file__).parent
 PATH_TO_BD = pasta_atual / 'bd_usuarios.sqlite'
 
@@ -33,10 +35,39 @@ class UsuarioFerias(Base):
     
     def verifica_senha(self, senha):
         return check_password_hash(self.senha, senha)
+    
+    def adicionar_ferias(self, inicio_ferias, final_ferias):
+        total_dias = (
+            datetime.strptime(final_ferias, '%Y-%m-%d')
+             - datetime.strptime(inicio_ferias, '%Y-%m-%d')
+        ).days + 1
+
+        with Session(bind=engine) as session:
+            ferias = EventosFerias(
+                parent_id = self.id,
+                inicio_ferias = inicio_ferias,
+                fim_ferias =  final_ferias,
+                total_dias = total_dias
+            )
+            session.add(ferias)
+            session.commit()
+    
+    def lista_ferias(self):
+        lista_eventos = []
+        for evento in self.eventos_ferias:
+            lista_eventos.append({
+                'title': f'Férias do {self.nome}',
+                'start': evento.inicio_ferias,
+                'end': evento.fim_ferias,
+                'resourceID': self.id
+            })
+        return lista_eventos
+
 
 # Tabela de Ferias  
 class EventosFerias(Base):
     __tablename__ = 'eventos_ferias'
+
     id: Mapped[int] = mapped_column(primary_key=True)
     parent_id: Mapped[int] = mapped_column(ForeignKey('usuarios_ferias.id')) # referencia o usuário da tabela UsuarioFerias
     parent: Mapped['UsuarioFerias'] = relationship(lazy='subquery') # Deixa explicito que há uma relação entre tabelas
@@ -128,13 +159,13 @@ if __name__ == '__main__':
 #         email='joelmapalmito@gmail.com',
 #         acesso_gestor=False,
 # )
-    cria_usuario(
-        'Cleiton Carvalho',
-        senha='123456',
-        inicio_na_empresa = '2024-11-15',
-        email='cleitinhodabahia@gmail.com',
-        acesso_gestor=True,
-)
+#     cria_usuario(
+#         'Cleiton Carvalho',
+#         senha='123456',
+#         inicio_na_empresa = '2024-11-15',
+#         email='cleitinhodabahia@gmail.com',
+#         acesso_gestor=True,
+# )
 
     
     # ===== verifica senha ====
