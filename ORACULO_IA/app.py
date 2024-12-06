@@ -2,6 +2,7 @@ import streamlit as st
 from langchain.memory import ConversationBufferMemory
 from langchain_openai import ChatOpenAI
 from langchain_groq import ChatGroq
+from langchain_community.document_loaders import WebBaseLoader
 
 TIPOS_ARQUIVOS_VALIDOS = [
     'Site', 'Youtube', 'PDF', 'CSV', 'TXT'
