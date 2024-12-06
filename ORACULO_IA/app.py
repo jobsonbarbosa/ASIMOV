@@ -3,6 +3,7 @@ import streamlit as st
 from langchain.memory import ConversationBufferMemory
 from langchain_openai import ChatOpenAI
 from langchain_groq import ChatGroq
+from langchain.prompts import ChatPromptTemplate
 from langchain_community.document_loaders import WebBaseLoader
 from loading import *
 
@@ -18,8 +19,7 @@ CONFIG_MODELOS = {
 # Usando memorias do LangChain
 MEMORIA = ConversationBufferMemory()
 
-
-def carrega_modelo(provedor, modelo, api_key, tipo_arquivo, arquivo):
+def carrega_arquivos(tipo_arquivo, arquivo):
     if tipo_arquivo == 'Site':
         documento = carrega_site(arquivo)
     if tipo_arquivo == 'Youtube':
@@ -39,8 +39,33 @@ def carrega_modelo(provedor, modelo, api_key, tipo_arquivo, arquivo):
             temp.write(arquivo.read())
             nome_temp = temp.name
         documento = carrega_txt(nome_temp)
+    return documento
+
+def carrega_modelo(provedor, modelo, api_key, tipo_arquivo, arquivo):
+       
+    documento = carrega_arquivos(tipo_arquivo, arquivo)
     
-    print(documento)
+    system_message = '''Você é um assistente amigável chamado Jobs Oracle.
+    Você possui acesso às seguintes informações vindas 
+    de um documento {}: 
+
+    ####
+    {}
+    ####
+
+    Utilize as informações fornecidas para basear as suas respostas.
+
+    Sempre que houver $ na sua saída, substita por S.
+
+    Se a informação do documento for algo como "Just a moment...Enable JavaScript and cookies to continue" 
+    sugira ao usuário carregar novamente o Oráculo!
+    '''.format(tipo_arquivo, documento)
+    
+    template = ChatPromptTemplate.from_messages([
+        ('system', system_message),
+        ('placeholder', '(chat_history)'),
+        ('user', '{input}')
+    ])
     
     
     chat = CONFIG_MODELOS[provedor]['chat'](model=modelo, api_key=api_key)
