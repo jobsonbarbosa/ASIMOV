@@ -13,12 +13,12 @@ def carrega_site():
     documento = '\n\n'.join([doc.page_content for doc in lista_documentos])
     return documento
 
-# url_yt = 'v=mnfPby1GbQg'
-# def carrega_youtube(video_id):
-#     loader= YoutubeLoader(video_id, add_video_info=False, language=['pt'])
-#     lista_documentos_yt = loader.load()
-#     documento_yt = '\n\n'.join([doc.page_content for doc in lista_documentos_yt])
-#     return documento_yt
+url_yt = 'v=mnfPby1GbQg'
+def carrega_youtube(video_id):
+    loader= YoutubeLoader(video_id, add_video_info=False, language=['pt'])
+    lista_documentos_yt = loader.load()
+    documento_yt = '\n\n'.join([doc.page_content for doc in lista_documentos_yt])
+    return documento_yt
 
 caminho = 'arquivos\knowledge_base.csv'
 def carrega_csv(caminho):
