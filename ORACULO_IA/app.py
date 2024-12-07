@@ -7,6 +7,7 @@ from langchain.prompts import ChatPromptTemplate
 from langchain_community.document_loaders import WebBaseLoader
 from loading import *
 
+
 TIPOS_ARQUIVOS_VALIDOS = [
     'Site', 'Youtube', 'PDF', 'CSV', 'TXT'
 ]
@@ -58,18 +59,19 @@ def carrega_modelo(provedor, modelo, api_key, tipo_arquivo, arquivo):
     Sempre que houver $ na sua saída, substita por S.
 
     Se a informação do documento for algo como "Just a moment...Enable JavaScript and cookies to continue" 
-    sugira ao usuário carregar novamente o Oráculo!
-    '''.format(tipo_arquivo, documento)
+    sugira ao usuário carregar novamente o Oráculo!'''.format(tipo_arquivo, documento)
     
     template = ChatPromptTemplate.from_messages([
         ('system', system_message),
-        ('placeholder', '(chat_history)'),
+        ('placeholder', '{chat_history}'),
         ('user', '{input}')
-    ])
-    
+    ]) 
     
     chat = CONFIG_MODELOS[provedor]['chat'](model=modelo, api_key=api_key)
-    st.session_state['chat'] = chat
+
+    chain = template | chat 
+
+    st.session_state['chain'] = chain
 
 # Adicionando memoria pre-definidas
 #==== Usado apenas para teste ====== #
@@ -86,7 +88,11 @@ def carrega_modelo(provedor, modelo, api_key, tipo_arquivo, arquivo):
 def pagina_chat():
     st.header("Seja bem vindo ao Jobs Oracle", divider=True)
     
-    chat_model = st.session_state.get('chat')
+    chain = st.session_state.get('chain')
+
+    if chain is None:
+        st.error('Carregue o Jobs Oracle')
+        st.stop()
     
     # Guardar na memoria as mesangem na sessão, se não houver retornar uma dicionário vazio.
     memoria = st.session_state.get('memoria', MEMORIA)
@@ -103,7 +109,10 @@ def pagina_chat():
         
         
         chat = st.chat_message('ai')
-        resposta = chat.write_stream(chat_model.stream(input_usuario))
+        resposta = chat.write_stream(chain.stream({
+            'input': input_usuario, 
+            'chat_history': memoria.buffer_as_messages
+            }))
         # resposta = chat_model.invoke(input_usuario).content
         memoria.chat_memory.add_ai_message(resposta)
         
@@ -144,11 +153,15 @@ def sidebar():
     #Botão para iniciar a IA
     if st.button('Inicializar o Jobs Oracle', use_container_width=True):
         carrega_modelo(provedor, modelo, api_key, tipo_arquivo, arquivo)
+    
+    # Botão para limpar o histórico
+    if st.button('Apagar o histórico de conversa', use_container_width=True):
+        st.session_state['memoria'] = MEMORIA
 
 def main():
-    pagina_chat()
     with st.sidebar:
         sidebar()
+    pagina_chat()
 
 if __name__ == '__main__':
     main()
