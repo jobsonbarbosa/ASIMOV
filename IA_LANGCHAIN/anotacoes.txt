@@ -1,0 +1,4 @@
+Models
+
+LLMs - Modelos de Linguagem Grande, componente geral do LangChain.
+O Langchain não fornece seus proprios LLMs, mas sim oferece uma interface padrão para interagir com diversos LLMs diferentes.
