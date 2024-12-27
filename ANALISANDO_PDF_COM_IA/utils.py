@@ -46,7 +46,7 @@ def cria_vector_store(documentos):
         embedding = embedding_model
     )
     return vector_store
-
+#
 def cria_chain_conversa():
     
     documentos =importacao_documentos()
