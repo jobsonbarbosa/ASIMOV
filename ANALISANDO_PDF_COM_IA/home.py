@@ -41,7 +41,7 @@ def sidebar():
             st.rerun()
 
 def chat_window():
-    st.header('Bem vindo ao chat com PDF da Job Solution IT')
+    st.header('Bem vindo ao chat com PDF da Jobs Solutions IT')
     
     if not 'chain' in st.session_state:
         st.error('Faça o upload de PDFs para começar')
