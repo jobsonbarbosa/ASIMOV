@@ -41,7 +41,7 @@ def sidebar():
             st.rerun()
 
 def chat_window():
-    st.header('Bem vindo ao chat com PDF da Brasquimica')
+    st.header('Bem vindo ao chat com PDF da Job Solution IT')
     
     if not 'chain' in st.session_state:
         st.error('Faça o upload de PDFs para começar')
@@ -50,7 +50,7 @@ def chat_window():
     chain = st.session_state['chain']
     memory = chain.memory
     
-    memory = st.session_state['memory']
+    # memory = st.session_state['memory']
     
     mensagens = memory.load_memory_variables({})['chat_history']
     

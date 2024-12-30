@@ -7,16 +7,19 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_openai.embeddings import OpenAIEmbeddings
 from langchain_openai.chat_models import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
+from langchain.prompts import PromptTemplate
 from langchain.chains.conversational_retrieval.base  import ConversationalRetrievalChain
 from dotenv import load_dotenv
 import os
+
+from configs import *
 
 load_dotenv()
 
 os.getenv('OPENAI_API_KEY')
 
 PASTA_ARQUIVOS = Path(__file__).parent/'arquivos'
-MODEL_NAME = 'gpt-3.5-turbo-0125'
+
 
 def importacao_documentos():
     documentos = []
@@ -52,25 +55,31 @@ def cria_chain_conversa():
     documentos =importacao_documentos()
     documentos = split_documentos(documentos)
     vector_store = cria_vector_store(documentos)
-    chain = cria_chain_conversa(vector_store)
+    # chain = cria_chain_conversa(vector_store)
     
-    chat = ChatOpenAI(model=MODEL_NAME)
+    chat = ChatOpenAI(model=get_config('model_name'))
     memory = ConversationBufferMemory(
         return_messages=True,
         memory_key = 'chat_history',
         output_key='answer'
         )
-    retriver = vector_store.as_retriver()
+    retriever = vector_store.as_retriever(
+        search_type = get_config('retrieval_search_type'),
+        search_kwargs = get_config('retrieval_kwargs')
+    )
+
+    prompt = PromptTemplate.from_template(get_config('prompt'))
+
     chat_chain = ConversationalRetrievalChain.from_llm(
         llm = chat,
         memory = memory,
-        retriever=retriver,
+        retriever=retriever,
         return_source_documents = True,
-        verbose=True
+        verbose=True,
+        combine_docs_chain_kwargs={'prompt': prompt}
     )
     
-    st.session_state['chain'] = chain
-    return chat_chain
+    st.session_state['chain'] = chat_chain
 
 # if __name__ == '__main__':
 #     documentos =importacao_documentos()
