@@ -68,7 +68,8 @@ def chat_window():
         chat.markdown('Gerando responsta')
         
         # Geração de resposta
-        chain.invoke({'question': nova_mensagem})
+        resposta = chain.invoke({'question': nova_mensagem})
+        st.session_state['ultima_resposta'] = resposta
         # time.sleep(2)
         # memory.chat_memory.add_user_message(nova_mensagem)
         # memory.chat_memory.add_ai_message('Oi, é a LLM aqui de novo!')
