@@ -24,7 +24,7 @@ def sidebar():
         for arquivo in PASTA_ARQUIVOS.glob('*.pdf'):
             arquivo.unlink()
         for pdf in uploader_pdfs:
-            with open(PASTA_ARQUIVOS / pdf.name, 'wb') as f:
+            with open(PASTA_ARQUIVOS/pdf.name, 'wb') as f:
                 f.write(pdf.read())
 
     # BOTÃO DE CARREGAR
