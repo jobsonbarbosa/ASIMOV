@@ -38,6 +38,7 @@ with open(pasta_atual / 'lista_compras.txt', 'r', encoding='utf-8') as lista_com
     print(lista_compras.readlines())
 '''
 
+''' --- Resolvido ---
 # Escrevendo arquivo
 items_comprados = ['Feijão', 'Arroz', 'Macarrão']
 
@@ -46,8 +47,37 @@ with open(pasta_atual / 'lista_compras.txt', 'r', encoding='utf-8') as lista_com
 
 with open(pasta_atual / 'lista_compras_atualizada.txt', 'w', encoding='utf-8') as lista_atualizada:
     for item in items_lista:
+        #print(item)
         if not item.replace('\n', '') in items_comprados:
             lista_atualizada.write(item)
+'''
+
+''' --- Resolvido ---
+# Escrevendo linha a linha
+items_ja_comprados = ['Feijão', 'Arroz', 'Macarrão']
+
+with open(pasta_atual / 'lista_compras.txt', 'r', encoding='utf-8') as lista_compras:
+    items_lista = lista_compras.readlines()
+items_lista_atualizada = []
+for item in items_lista:
+    if not item.replace('\n', '') in items_ja_comprados:
+        if
+        items_lista_atualizada.append(item)
+# print(items_lista)
+# print(items_lista_atualizada)
+
+with open('lista_de_compras_atualizada.txt', 'w', encoding='utf-8') as lista_atualizada:
+    lista_atualizada.writelines(items_lista_atualizada)
+'''
 
 
-    
+# Acrescentando valores
+pasta_atual = Path(__file__).parent
+
+novo_items = ['Jaca']
+
+novo_items_c_quebra = []
+for item in novo_items:
+    novo_items_c_quebra.append(f'\n{item}')
+with open('lista_compras.txt', 'w', encoding='utf-8') as lista_adicionada:
+    lista_adicionada.writelines(novo_items_c_quebra)
